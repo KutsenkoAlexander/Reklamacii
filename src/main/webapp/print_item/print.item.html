@@ -1,0 +1,105 @@
+<div ng-controller="printItemCtrl" print-only>
+    <table style="border: 1px solid #000; font-size: 11px; margin-left: 10px;">
+        <thead style="background-color: #e2e2e2;">
+            <tr style="text-align: center; background-color: #e2e2e2; padding: 0">
+                <th rowspan="2" class="print_table_header">
+                    № п/п
+                </th>
+                <th rowspan="2" class="rotate print_table_header">
+                    Дата внесения записи
+                </th>
+                <th rowspan="2" class="rotate print_table_header">
+                    Тип изделия
+                </th>
+                <th rowspan="2" class="rotate print_table_header">
+                    Наименование изделия
+                </th>
+                <th rowspan="2" class="rotate print_table_header">
+                    Потребитель
+                </th>
+                <th rowspan="2" class="rotate print_table_header">
+                    Способ устранения дефекта
+                </th>
+                <th rowspan="2" class="rotate print_table_header">
+                    Акт иследования/технический акт
+                </th>
+                <th rowspan="2" class="rotate print_table_header">
+                    Причина дефекта
+                </th>
+                <th rowspan="2" class="rotate print_table_header">
+                    Классификация дефекта
+                </th>
+                <th colspan="3" class="title_col_space">
+                    Меры по дефекту
+                </th>
+                <th colspan="2" class="title_col_space with_left_border">
+                    Востановление
+                </th>
+                <th colspan="2" class="title_col_space with_left_border">
+                    Отгрузка
+                </th>
+                <th rowspan="2" class="rotate print_table_header with_left_border">
+                    Ответственный исполнитель
+                </th>
+                <th rowspan="2" class="rotate print_table_header_last">
+                    Рекламация удолитворена
+                </th>
+            </tr>
+            <tr style="height: 165px; text-align: center; background-color: #e2e2e2">
+                <th class="col_space_table_header_text_wrap_none">
+                    Перечень мер
+                </th>
+                <th class="rotate col_space_table_header with_left_border">
+                    Назначенный срок
+                </th>
+                <th class="rotate col_space_table_header with_left_border">
+                    Дата выполнения
+                </th>
+                <th class="rotate col_space_table_header with_left_border">
+                    Назаначенный срок
+                </th>
+                <th class="rotate col_space_table_header with_left_border">
+                    Дата выполнения
+                </th>
+                <th class="rotate col_space_table_header with_left_border">
+                    Назначенный срок
+                </th>
+                <th class="rotate col_space_table_header with_left_border">
+                    Дата выполнения
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="border-top: 1px solid #000;" ng-repeat="item in items">
+                <td class="print_table_body_td">{{$index+1}}</td>
+                <td class="print_table_body_td">{{item.entryDate*1000 | date: 'dd.MM.yyyy'}}</td>
+                <td class="print_table_body_td">{{item.ctp.productType.name}}</td>
+                <td class="print_table_body_td">{{item.productName}}</td>
+                <td class="print_table_body_td">{{item.ctp.consumer.name}}</td>
+                <td class="print_table_body_td">{{item.solutions}}</td>
+                <td class="print_table_body_td">{{item.actNumber}}</td>
+                <td class="print_table_body_td">
+                    <p ng-repeat="cause in item.defects">{{cause.cause}}</p>
+                </td>
+                <td class="print_table_body_td">
+                    <p ng-repeat="class in item.defects">{{class.sprClassDefect.name}}</p>
+                </td>
+                <td class="print_table_body_td">
+                    <p ng-repeat="solution in item.defectSolutions">{{solution.measures}}</p>
+                </td>
+                <td class="print_table_body_td">
+                    <p ng-repeat="solution in item.defectSolutions">{{solution.appointmentDate}}</p>
+                </td>
+                <td class="print_table_body_td">
+                    <p ng-repeat="solution in item.defectSolutions">{{solution.completeDate}}</p>
+                </td>
+                <td class="print_table_body_td">{{item.recoveryProduct.appointmentRecoveryDate}}</td>
+                <td class="print_table_body_td">{{item.recoveryProduct.completeRecoveryDate}}</td>
+                <td class="print_table_body_td">{{item.shipment.appointmentDate}}</td>
+                <td class="print_table_body_td">{{item.shipment.completeDate}}</td>
+                <td class="print_table_body_td">{{item.user}}</td>
+                <td class="print_table_body_td">{{item.chekedReklamacia ? 'Да' : 'Нет'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

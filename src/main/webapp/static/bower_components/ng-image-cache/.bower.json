@@ -1,0 +1,21 @@
+{
+  "name": "ng-image-cache",
+  "version": "0.3.0",
+  "main": "dist/ng-image-cache.js",
+  "ignore": [
+    ".editorconfig",
+    ".jshintrc",
+    "**/*.md"
+  ],
+  "homepage": "https://github.com/ghoullier/ng-image-cache",
+  "_release": "0.3.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.3.0",
+    "commit": "561bf32e5c9c7e0ab9b0e81c2290259327ecd39c"
+  },
+  "_source": "https://github.com/ghoullier/ng-image-cache.git",
+  "_target": "^0.3.0",
+  "_originalSource": "ng-image-cache",
+  "_direct": true
+}

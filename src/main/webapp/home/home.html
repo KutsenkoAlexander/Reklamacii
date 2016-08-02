@@ -1,0 +1,67 @@
+<div class="filter_class">
+    <div style="display: inline-block; font-size: 11px">
+        <input type="text"
+               class="form-control datepicker"
+               style="height: 26px"
+               readonly
+               id="date_from"
+               ng-model="dateFrom"
+               ng-change="selectedDateFrom()"
+               placeholder="От какого числа" date-sort-from/>
+    </div>
+    <div style="display: inline-block; font-size: 11px;">
+        <input type="text"
+               class="form-control datepicker"
+               style="height: 26px;"
+               readonly
+               id="date_to"
+               ng-model="dateTo"
+               ng-change="selectedDateTo()"
+               placeholder="По какое число" date-sort-to>
+    </div>
+    <select ng-model="type"
+            ng-change="selectedTypeProduct()"
+            class="form-control"
+            ng-options="type.name for type in dataTypes | orderBy: 'name' track by type.idProductType">
+        <option value="">Тип изделия</option>
+    </select>
+    <select ng-model="oenExecutor"
+            ng-change="selectedOenExecutor()"
+            class="form-control"
+            ng-options="oenExecutor.usersByIdUser as oenExecutor.usersByIdUser.details for oenExecutor in dataOenExecutors | orderBy: 'usersByIdUser.details' track by oenExecutor.idUser">
+        <option value="">Ответственный</option>
+    </select>
+    <select ng-model="classDefect"
+            ng-change="selectedClassDefect()"
+            class="form-control"
+            ng-options="classDefect.name for classDefect in dataClassDefects | orderBy: 'name' track by classDefect.idClassDefect">
+        <option value="">Классификация</option>
+    </select>
+
+    <angucomplete-consumer type="search"
+                  id="searchConsumer"
+                  placeholder="Потребитель"
+                  pause="200"
+                  selectedobject="object"
+                  url="/consumer/search/?params="
+                  titlefield="title"
+                  ng-model="consumer"
+                  inputclass="form-control form-control-small"/>
+    <input type="hidden" ng-model="consumerName"/>
+
+    <input type="search"
+           id="searchProductByName"
+           placeholder="Название изделия"
+           ng-model="productName"
+           class="form-control form-control-small"/>
+
+    <input type="search"
+           id="searchProductByNumber"
+           placeholder="Номер изделия"
+           ng-model="number"
+           class="form-control form-control-small"/>
+
+    <button class="btn btn-primary"
+            ng-click="filterOff()"
+            style="position: relative; left: 5px; padding: 3px 6px;">Сброс фильтров</button>
+</div>

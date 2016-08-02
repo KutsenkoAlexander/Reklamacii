@@ -1,0 +1,317 @@
+<div style="margin-top: 20px;" ng-controller="editCtrl">
+    <form name="myform" ng-submit="save()">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="font-weight: bold;">{{(titleWindow) ? "Добавление новой рекламации" : "Редактирование рекламации"}}</h3>
+                <button type="reset"
+                        class="btn btn-default"
+                        style="float: right;
+                               position: relative;
+                               top: -22px;
+                               margin: 0;"
+                        ng-click="cancel()">Отмена</button>
+            </div>
+            <!--START-->
+            <div class="panel-body" style="margin-right: 0; padding: 15px 15px 0 15px;">
+                <div class="well" style="border: none; background-color: #fff; background-image: none; box-shadow: none; padding: 0 20px 10px 20px;">
+                    <!--Date add-->
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable">
+                            <p style="font-size: 14px">Дата внесения</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text"
+                                   class="form-control editable_input datepicker"
+                                   placeholder="Дата внесения"
+                                   required
+                                   readonly
+                                   datepicker-add-item
+                                   id="dateAddItem"
+                                   ng-model="dateAddItem">
+                        </div>
+                    </div>
+                    <!--responsible worker OEN-->
+                    <div class="row" style="margin-right: 0; margin-bottom: 5px;">
+                        <div class="col-sm-2 col-md-2 editable_lable">
+                            <p style="font-size: 14px">Ответственный исполнитель ОЭН</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <select ng-model="oenExecutor"
+                                    id="oenExecutor"
+                                    required
+                                    style="margin-left: 0; padding-left: 0; width: 100%;"
+                                    class="form-control"
+                                    ng-change="selectedOenExecutor()"
+                                    ng-options="oenExecutor.usersByIdUser as oenExecutor.usersByIdUser.details for oenExecutor in dataOenExecutors | orderBy: 'usersByIdUser.details' track by oenExecutor.idUser">
+                                <option value="">Ответственный</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--type product-->
+                    <div class="row" style="margin-right: 0; margin-bottom: 5px;">
+                        <div class="col-sm-2 col-md-2 editable_lable">
+                            <p style="font-size: 14px">Тип изделия</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <select ng-model="type"
+                                    id="type"
+                                    required
+                                    class="form-control"
+                                    style="margin-left: 0; padding-left: 0; width: 100%;"
+                                    ng-change="selectedTypeProduct()"
+                                    ng-options="type.name for type in dataTypes | orderBy: 'name' track by type.idProductType">
+                                <option value="">Тип изделия</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--name product-->
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Наименование изделия</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <angucomplete-name-product class="my_angucompleate"
+                                          style="width: 100%; margin: 5px 0;"
+                                          placeholder="Название изделия"
+                                          pause="200"
+                                          selectedobject="object"
+                                          url="http://192.168.31.200:8888/AspectGetProductInfo/product-name/name/?params="
+                                          titlefield="title"
+                                          inputclass="new_class_inpt form-control"/>
+                        </div>
+                    </div>
+                    <!--serial number-->
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Заводской номер</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input required
+                                   type="text"
+                                   class="form-control editable_input"
+                                   placeholder="Заводской номер"
+                                   ng-model="numberProduct" id="numberProduct">
+                        </div>
+                    </div>
+                    <!--consumer-->
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Потребитель</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10" ng-controller="consumerCtrl">
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    ng-show="showButtonAddConsumer"
+                                    style="float: right;"
+                                    ng-click="addNewConsumer()">Добавить</button>
+                            <angucomplete-consumer class="my_angucompleate"
+                                          ng-class="showButtonAddConsumer ? 'edit_consumer_input_with_add_btn' : 'edit_consumer_input' "
+                                          placeholder="Потребитель"
+                                          pause="200"
+                                          selectedobject="object"
+                                          url="/consumer/search/?params="
+                                          titlefield="title"
+                                          ng-model="consumer_item"
+                                          inputclass="new_class_inpt form-control"/>
+
+                        </div>
+                    </div>
+                    <!--solution-->
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Способ устранения дефекта</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input required
+                                   type="text"
+                                   class="form-control editable_input"
+                                   placeholder="Способ устранения дефекта"
+                                   id="solution"
+                                   ng-model="solution">
+                        </div>
+                    </div>
+                    <!--act-->
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Акт иследования / технический акт</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input required
+                                   type="text"
+                                   class="form-control editable_input"
+                                   placeholder="Акт иследования / технический акт"
+                                   ng-model="act"
+                                   id="act">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="well" style="margin-bottom: 20px;padding-bottom:27px;">
+                    <div style="height: 28px;">
+                        <p style="display: inline-block; width: 300px; padding: 10px 0;">Перечень дефектов</p>
+                        <button type="button" class="btn btn-primary" ng-click="showCreateCauseForm()">Добавить</button>
+                    </div>
+                    <table class="table table_defects"
+                           style="font-size: 14px; background-color: #fff; margin-top: 30px;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Причина дефекта</th>
+                                <th>Классификация</th>
+                                <th style="text-align: center">Опции</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="causeItem in causeList" ng-show="causeList">
+                                <td>{{$index + 1}}</td>
+                                <td>{{causeItem.cause}}</td>
+                                <td>{{causeItem.sprClassDefect.name}}</td>
+                                <td style="cursor: pointer; text-align: center">
+                                    <img src="../static/img/delete.png"
+                                         style="width: 18px;"
+                                         ng-click="deleteCause($index, causeItem.idDefect, causeItem.cause)"
+                                         title="Удалить"
+                                         alt="Удалить"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="well">
+                    <div style="height: 37px;">
+                        <p style="display: inline-block; width: 300px; padding: 10px 0;">Перечень мер по дефекту</p>
+                        <button type="button" class="btn btn-primary" ng-click="showCreateSolutionForm()">Добавить</button>
+                    </div>
+                    <table class="table table_defects"
+                           style="font-size: 14px; background-color: #fff; margin-top: 30px;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Мера</th>
+                                <th>Ответственный</th>
+                                <th>Назначенный срок</th>
+                                <th>Срок выполнения</th>
+                                <th style="text-align: center">Опции</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="solutionItem in solutionList" ng-show="solutionList">
+                            <td>{{$index + 1}}</td>
+                            <td>{{solutionItem.measures}}</td>
+                            <td>{{solutionItem.executor.name}}</td>
+                            <td>{{solutionItem.appointmentDate}}</td>
+                            <td>{{solutionItem.completeDate}}</td>
+                            <td style="cursor: pointer; text-align: center">
+                                <img src="../static/img/edit.png"
+                                     style="width: 18px; margin-right: 10px;"
+                                     ng-click="editSolution($index, solutionItem.idDefectSolution)"
+                                     title="Редактировать"
+                                     alt="Редактировать"/>
+                                <img src="../static/img/delete.png"
+                                     style="width: 18px;"
+                                     ng-click="deleteSolution($index, solutionItem.idDefectSolution, solutionItem.measures)"
+                                     title="Удалить"
+                                     alt="Удалить"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="well" style="margin-top: 20px">
+                    <p style="margin-bottom: 10px">Востановление изделия</p>{{recoveryProduct}}
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Назаначенный срок</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text"
+                                   class="form-control editable_input datepicker"
+                                   placeholder="Назначенный срок"
+                                   readonly
+                                   date-appointed-recovery-product
+                                   id="dateAppoinedRecoveryProduct"
+                                   ng-model="dateAppoinedRecoveryProduct">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Дата выполнения</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text"
+                                   class="form-control editable_input datepicker"
+                                   placeholder="Дата выполнения"
+                                   readonly
+                                   date-to-recovery-product
+                                   id="dateToRecoveryProduct"
+                                   ng-model="dateToRecoveryProduct">
+                        </div>
+                    </div>
+                    <input type="hidden" ng-model="idRecoveryProduct">
+                </div>
+
+                <div class="well" style="margin-top: 20px">
+                    <p style="margin-bottom: 10px">Отгрузка изделия</p>
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Назаначенный срок</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text"
+                                   class="form-control editable_input datepicker"
+                                   placeholder="Назначенный срок"
+                                   readonly
+                                   date-appointed-shipment-product
+                                   id="dateAppoinedShipmentProduct"
+                                   ng-model="dateAppoinedShipmentProduct">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Дата выполнения</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text"
+                                   class="form-control editable_input datepicker"
+                                   placeholder="Дата выполнения"
+                                   readonly
+                                   date-to-shipment-product
+                                   ng-model="dateToShipmentProduct">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable" style="text-align: left; vertical-align: middle">
+                            <p style="font-size: 14px">Номер накладной</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text"
+                                   class="form-control editable_input"
+                                   placeholder="Номер накладной"
+                                   ng-model="waybill">
+                        </div>
+                    </div>
+                    <input type="hidden" ng-model="idShipment">
+                </div>
+
+                <div class="well" style="border: none; background-color: #fff; background-image: none; box-shadow: none">
+                    <div class="row" style="margin-right: 0">
+                        <div class="col-sm-2 col-md-2 editable_lable">
+                            <p style="font-size: 14px">Рекламация удолитворена</p>
+                        </div>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="checkbox"
+                                   style="text-align: left;"
+                                   id="chekedReklamacia"
+                                   ng-model="chekedReklamacia">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success" style="float: right;">Сохранить</button>
+        <button type="reset" class="btn btn-default" style="float: right;" ng-click="cancel()">Отмена</button>
+    </form>
+</div>
+

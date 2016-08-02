@@ -1,0 +1,23 @@
+<div class="panel panel-default" style="margin-bottom: 0;">
+    <div class="panel-heading">
+        <h3 class="panel-title">Добавление нового дефекта</h3>
+    </div>
+    <div class="panel-body">
+        <form class="row" ng-submit="addCause()" style="margin: 0;">
+            <input class="form-control"
+                   ng-model="causeName"
+                   style="width: 100%; margin: 5px 0;"
+                   placeholder="Наименование дефекта" required autofocus/>
+            <select ng-model="classDefect"
+                    ng-change="selectedTypeProduct()"
+                    class="form-control"
+                    style="width: 100%; margin: 5px 0;"
+                    required
+                    ng-options="classDefect.name for classDefect in dataClassDefects | orderBy: 'name' track by classDefect.idClassDefect">
+                <option value="">Классификация</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="reset" class="btn btn-default" ng-click="cancelAddCauseForm()">Отмена</button>
+        </form>
+    </div>
+</div>
